@@ -1,7 +1,5 @@
 import random
 
-from matplotlib.pyplot import connect
-
 class Graph:
     graph = []
     edge_set = []
@@ -15,7 +13,7 @@ class Graph:
         print(self.edge_set)
 
     def generate_random_edges(self):
-        edges_nmb = 20
+        edges_nmb = 40
         
         for _ in range(0, edges_nmb):
             strt = random.randint(0, self.node_number -1)
@@ -63,41 +61,35 @@ class Graph:
                 visited = visited + comp
         return components
 
-    def find_node_path(self, v1: int, v2: int, searched = []) -> list:
+    def backward_read(self, con_map: list, v2: int):
+        l = [v2]
+        pre = con_map[v2]
+
+        while pre != -1:
+            l.append(pre)
+            pre = con_map[pre]
+        return l
+
+    def find_node_path(self, v1: int, v2: int) -> list:
+        print(f'Search between {v1} and {v2}')
         adj_list = self.to_adjacency_list()
-        searched.append(v1)
+        searched = [v1]
+        
+        con_map = [-1 for _ in range(0, self.node_number)]
 
-        adjacents = adj_list[v1]
-        if v2 in adjacents:
-            searched.append(v2)
-            return searched
-        for adj in adjacents:
-            if (adj in searched):
-                continue
-            return self.find_node_path(adj, v2, searched)
+        queue = [ (v1, vn) for vn in adj_list[v1]]
+
+        if v1 == v2:
+            return []
+
+        while len(queue) > 0:
+            parent, elem = queue.pop()
+            if not elem in searched:
+                searched.append(elem)
+                con_map[elem] = parent
+
+                if elem == v2:
+                    return self.backward_read(con_map, v2)
+
+                queue =  [ (elem, vn) for vn in adj_list[elem]] + queue
         return []
-
-    def BFS(self, strt, dest, v, pred = {}, dist = {}):
-        adjacency_list = self.to_adjacency_list()
-        queue = []
-
-        visited = []
-  
-        visited.append(strt)
-        dist[strt] = 0
-        queue.append(strt)
-  
-        while (len(queue) != 0):
-            u = queue.pop(0)
-            for elem in adjacency_list[u]:
-         
-                if (not elem in visited):
-                    visited.append(elem)
-                    dist[elem] = dist[u] + 1
-                    pred[elem] = u
-                    queue.append(elem)
-  
-
-                    if (elem == dest):
-                        return True
-        return False

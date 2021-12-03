@@ -15,7 +15,7 @@ for r in adj:
     i += 1
 
 g_nx = nx.Graph(g.edge_set)
-nx.draw(g_nx)
+nx.draw(g_nx, with_labels = True)
 plt.show()
 
 print('Connected components')
