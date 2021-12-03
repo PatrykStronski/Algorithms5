@@ -15,6 +15,8 @@ for r in adj:
     i += 1
 
 g_nx = nx.Graph(g.edge_set)
+[g_nx.add_node(n) for n in range(0,100)]
+g_nx.add_edges_from(g.edge_set)
 nx.draw(g_nx, with_labels = True)
 plt.show()
 

@@ -3,7 +3,7 @@ import random
 class Graph:
     graph = []
     edge_set = []
-    node_number = 20
+    node_number = 100
 
     def __init__(self):
         self.graph = []
@@ -13,7 +13,7 @@ class Graph:
         print(self.edge_set)
 
     def generate_random_edges(self):
-        edges_nmb = 40
+        edges_nmb = 200
         
         for _ in range(0, edges_nmb):
             strt = random.randint(0, self.node_number -1)
